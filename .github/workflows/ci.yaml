@@ -4,11 +4,10 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        os : [windows-latest, ubuntu-latest]
         python-version: [3.6, 3.7]
 
     steps:
@@ -17,6 +16,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+        architecture: x64  # Specify the architecture explicitly
     - name: Install dependencies
       run: |
         make install
