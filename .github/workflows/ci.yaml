@@ -21,6 +21,6 @@ jobs:
           aws-region: ap-south-1
 
       - name: Trigger AWS CodeBuild
-        uses: aws-actions/aws-codebuild-run-build@v2
+        uses: aws-actions/aws-codebuild-run-build@v1
         with:
           project-name: ch1e3
