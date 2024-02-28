@@ -20,7 +20,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
-      - name: Trigger AWS CodeBuild
+      - name: Trigger AWS CodeBuild1
         uses: aws-actions/aws-codebuild-run-build@v1
         with:
           project-name: ch1e3
