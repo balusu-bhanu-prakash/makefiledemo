@@ -24,3 +24,18 @@ jobs:
         uses: aws-actions/aws-codebuild-run-build@v1
         with:
           project-name: ch1e3
+        # Existing build steps (replace with your actual steps)
+
+      - name: Login to container registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}  # Reference the secret
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}  # Reference the secret
+
+      - name: Build and tag Docker image
+        run: |
+          docker build -t balusubhanuprakash/e4t1:test1 .  # Replace placeholders
+
+      - name: Push Docker image to registry
+        run: |
+          docker push balusubhanuprakash/e4t1:test1  # Replace placeholders
