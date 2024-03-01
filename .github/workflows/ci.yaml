@@ -1,4 +1,4 @@
-name: CI-CD with AWS CodeBuild
+name: CI-CD with AWS CodeBuild and Load Testing
 
 on:
   push:
@@ -26,16 +26,29 @@ jobs:
           project-name: ch1e3
         # Existing build steps (replace with your actual steps)
 
+      - name: Install Locust dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run load test (staging branch only)
+        if: github.ref == 'refs/heads/staging'  # Run only on staging branch pushes
+        steps:
+          - name: Run Locust test
+            run: |
+              locust -f locustfile.py -n 10 -H http://localhost:8000/ # Run test with 10 users
+
       - name: Login to container registry
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}  # Reference the secret
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}  # Reference the secret
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and tag Docker image
+      - name: Build and tag Docker image (Optional - staging)
+        if: github.ref == 'refs/heads/staging'  # Build staging image only on staging branch pushes
         run: |
-          docker build -t balusubhanuprakash/e4t1:test1 .  # Replace placeholders
+          docker build -t balusubhanuprakash/e4t1:staging .  # Replace with desired staging image name
 
-      - name: Push Docker image to registry
+      - name: Push Docker image to registry (Optional - staging)
+        if: github.ref == 'refs/heads/staging'  # Push staging image only on staging branch pushes
         run: |
-          docker push balusubhanuprakash/e4t1:test1  # Replace placeholders
+          docker push balusubhanuprakash/e4t1:staging  # Replace with desired staging image name
